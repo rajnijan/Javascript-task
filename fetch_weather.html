@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Javascript :- Fetch User Info</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+    <script src="https://kit.fontawesome.com/8ce4ea1221.js" crossorigin="anonymous"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+    <style>
+        *{margin: 0px; padding: 0px; box-sizing: border-box;}
+        html{
+
+
+            --whitecolor:#fff;
+
+            --ff1:"Josefin Sans", sans-serif; 
+            --ff2:"Chakra Petch", sans-serif;
+        }
+        body{
+            /* background: #000; */
+            background-image: linear-gradient(to bottom right, #1b2c33, #213035);
+            height: 100vh;
+            /*102b36 1e4355 */
+        
+            font-family: var(--ff1);
+            font-style: normal;
+
+            
+        }
+        .flex {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+
+            margin: 0px;
+            flex-direction: column;
+        }
+
+        .box,
+        .table3,
+        .div_7,
+        .series,
+        .series2 {
+            width: 300px;
+            height: 200px;
+            border: solid 1px red;
+            padding: 10px;
+            overflow: auto;
+        }
+
+
+        .btn,
+        select,
+        input[type="text"],
+        input[type="number"],
+        input[type="password"],
+        input[type="search"],
+        input[type="email"],
+        .input {
+            height: 40px;
+            padding: 8px 12px;
+            border: 1px solid #888;
+            background: transparent;
+            color: inherit;
+            border-radius: 5px;
+            vertical-align: middle;
+            margin: 5px;
+        }
+
+        .cityList {
+            margin: 1rem 0;
+            border-collapse: collapse;
+        }
+
+        .cityList :is(td, th) {
+            border: 1px solid #888;
+            padding: 5px;
+        }
+
+
+        /* Weather */
+        .weather-box-input{width:550px; background: #1b2c33; border-radius: 12px; padding: 20px; margin: 20px 0px 20px; border: solid 1px #31444a;}
+
+
+        #weatherBox{display: none;}
+        .weather-box{width: 550px; height: auto; background: transparent; border-radius: 12px; padding: 20px; border: solid 1px #31444a; transition: all 0.5s ease;}
+        .search_form{display: flex; align-items: center; justify-content: space-between;}
+        .search_form input{width: 85%; font-size: 18px;}
+        .search_form button{width: 15%; line-height: 38px; border-radius: 4px; font-size: 18px; border:solid 1px #888; background: var(--whitecolor); cursor: pointer;} 
+
+        .weather_D_I_T{display: flex; align-items: center; justify-content: space-between; border-bottom: solid 1px #31444a; margin: 0px 0px 30px; padding: 0px 0px 25px;}
+        .weather_Image_temp{display: flex;}
+        .weather-info{text-align: center;}
+        .weather-image{width:100px; margin: 0px auto;}
+
+
+        .weather-info .weather-temp{margin: 20px; text-align:left; color: var(--whitecolor);}
+        .temperature{font-size: 40px; font-weight: 800; position: relative;}
+        .temperature sup{font-size: 20px; font-weight: 600; position: absolute; right:-20px; top:-1px;}
+        .description{font-size: 20px; font-weight: 800; text-transform: capitalize;}
+
+        .weather_Date{margin: 20px; text-align:center; color: var(--whitecolor);}
+        .current_Day{font-size: 35px; font-weight: 800; margin-bottom: 15px;}
+        .current_d_m_y{font-size: 20px; font-weight: 800; text-transform: capitalize;}
+
+
+        .weather-detail{display: flex; justify-content: space-between;}
+
+        .humidity, .wind{display: flex; align-items: center;}
+        .weather_icon{width: 40px; line-height: 40px; text-align: center; border-radius: 5px; background: rgba(79, 87, 90, 0.8); border: solid 1px #444f55;}
+        .weather_icon i{color: var(--whitecolor);}
+
+        .weather-detail .text{margin: 0px 10px; text-align: left;}
+        .weather-detail .text span{color: #6d7a82; font-size: 20px; line-height: 25px;}
+        .weather-detail .text p{color: var(--whitecolor);}
+    </style>
+</head>
+
+<body>
+    <div class="flex">
+        
+        <div class="weather-box-input">
+            <form name="weather_search" class="search_form">
+                <input type="search" name="cityName" placeholder="Enter city name" required>
+                <button><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+        
+        <div class="weather-box" id="weatherBox">
+
+            <div class="weather-info">
+                <div class="weather_D_I_T">
+                    <div class="weather_Image_temp">
+                        <img src="assets/weather-cloudy.png" alt="weather" class="weather-image" />
+                    
+                        <div class="weather-temp">
+                            <p class="temperature">0 <sup>° C</sup></p>
+                            <p class="description">light rain</p>
+                        </div>
+                    </div>
+                    <div class="weather_Date">
+                        <div class="current_Day">Current Day</div>
+                        <div class="current_d_m_y">DDMMYYYY</div>
+                    </div>
+                </div>
+                
+
+                <div class="weather-detail">
+                    <div class="humidity">
+                        <div class="weather_icon"><i class="fa fa-tint"></i></div>
+                        <div class="text">
+                            <span id="humidity-degree">45%</span>
+                            <p>Humadity</p>
+                        </div>
+                    </div>
+                    <div class="wind">
+                        <div class="weather_icon"><i class="fa fa-wind"></i></div>
+                        <div class="text">
+                            <span id="wind-speed">12km/h</span>
+                            <p>Wind Speed</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        "use strict";
+
+        const weatherAPIKey = '91ec97880845261af026825ad00e045d';
+
+        window.
+
+        document.querySelector('[name="weather_search"]').addEventListener("submit", function (e) {
+            e.preventDefault();
+            const city = this.cityName.value;
+            const cityAPI = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${weatherAPIKey}&units=metric`;
+            
+            console.log(cityAPI);
+            
+            document.querySelector('[name="weather_search"] button').setAttribute("disabled", "");
+            // document.getElementById('weatherBox').style.display='block';
+
+            fetch(cityAPI).then(i => i.json()).then(i => {
+                if (i.cod==200) 
+                {
+                    
+                    document.getElementById('weatherBox').style.display='block';
+
+                    const weatherImage=document.querySelector(".weather-image");
+
+                    const weatherMain=i.weather[0].main;
+
+                    if(weatherMain=="Clouds"){
+                        weatherImage.src=`../assets/weather-cloudy.png`;
+                    }
+                    else if(weatherMain=="Rain"){
+                        weatherImage.src=`/assets/weather-rain.png`;
+                    }
+                    else if(weatherMain=="Haze"){
+                        weatherImage.src=`/assets/weather-haze.png`;
+                    }
+                    else if(weatherMain=="Snow"){
+                        weatherImage.src=`/assets/weather-snow.png`;
+                    }
+                    else if(weatherMain=="Sun"){
+                        weatherImage.src=`/assets/weather-sun.png`;
+                    }
+                    else if(weatherMain=="Storm"){
+                        weatherImage.src=`/assets/weather-storm.png`;
+                    }
+                    else
+                    {
+                        weatherImage.src=`/assets/weather-clear-sky.png`
+                    }
+                    
+                    const t=new Date();
+                    const current_DMY=t.toLocaleDateString();
+                    
+
+                    document.querySelector(".temperature").innerHTML=`${i.main.temp}<sup>° C</sup>`;            
+                    document.querySelector(".description").innerHTML=i.weather[0].description;
+
+                    document.getElementById("humidity-degree").innerHTML=`${i.main.humidity}%`;
+                    document.getElementById("wind-speed").innerHTML=`${i.wind.speed}km/h`;
+
+                    // const stringDay=new Array["Sun", "Mon", "Tue", "Wed", "Thurs", "Fri", "Sat"];
+                    // console.log(stringDay);
+                    // document.querySelector(".current_Day").innerHTML=stringDay[0];
+
+                    var days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];                                        
+                    const current_Day=days[t.getDay()];
+                    // console.log(current_Day);
+                    document.querySelector(".current_Day").innerHTML=current_Day;
+                    document.querySelector(".current_d_m_y").innerHTML=current_DMY;
+
+                }
+                else
+                {
+                    console.log("byee");                 
+                }
+                document.querySelector('[name="weather_search"] button').removeAttribute("disabled");
+            })
+            
+            
+            document.getElementById('weatherBox').style.display='none'; // where put this code.
+        });
+
+
+        // fetch("https://dog.ceo/api/breeds/list").then(i=>i.json()).then(i=>console.table(i)).then(i=>console.log(i))
+        // fetch("https://dog.ceo/api/breeds/list/all").then(i=>i.json()).then(i=>console.log(i));
+
+    </script>
+</body>
+
+</html>

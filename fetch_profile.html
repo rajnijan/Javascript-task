@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Javascript :- Fetch User Info</title>
+    <style>
+        .flex {display: flex; gap: 10px; flex-wrap: wrap;}
+
+        .user_div{width: 300px; border-radius: 10px; border: solid 2px #4d1919; padding: 10px; text-align: center;}
+        .user_div img{border-radius: 50%; border: 1px #4d1919 solid; padding: 3px; vertical-align: bottom;}
+
+        .user_personalInfo{margin: 10px 0px; display: block;}
+        .user_personalInfo h3{font-size: 20px; margin: 0px 0px 10px;}
+        .user_personalInfo p{margin: 0px;}
+
+
+        .user_follo_count{display: flex; justify-content: center; gap: 20px; margin: 20px 0px;}
+        .follow, .following{display: flex; flex-direction: column; font-size: 18px;}
+        .follow .count, .following .count{ color: #19a655; font-weight: 300;}
+
+
+        .bio{border-top: solid 2px rgba(25, 166, 85, 0.3); padding: 10px 0px 0px;}
+        .bio h4{font-size: 18px; margin-bottom:10px;}
+        
+    </style>
+</head>
+
+<body>
+    <div class="flex">
+        <div class="user_div">
+            <img src="" alt="" width="200" height="200" />
+            <div class="user_personalInfo">
+                <h3></h3>
+                <p></p>
+            </div>
+            <div class="user_follo_count">
+                <div class="follow">
+                    <span class="count"></span>
+                    <span class="count_text">Followers</span>
+                </div>
+                <div class="following">
+                    <span class="count"></span>
+                    <span class="count_text">Following</span>
+                </div>
+            </div>
+
+            <div class="bio">
+                <h4>Bio</h4>
+                <p></p>
+            </div>
+        </div>
+
+    </div>
+    <script>
+        "use strict";
+
+
+        fetch("https://api.github.com/users/avimalhotra").then(i => i.json()).then(i => console.log(i));
+
+        // fetch("https://api.github.com/users/avimalhotra").then(i=>i.json()).then(i=>console.log(i)).catch(e=>console.warn(e));
+
+        const profileURL = 'https://api.github.com/users/avimalhotra';
+        fetch(profileURL).then(i => i.json()).then(i => {
+            document.querySelector(".user_div img").src=i.avatar_url;
+            document.querySelector(".user_personalInfo h3").innerHTML=i.name;
+            document.querySelector(".user_personalInfo p").innerHTML=i.location;
+
+            document.querySelector(".follow .count").innerHTML=i.following;
+            document.querySelector(".following .count").innerHTML=i.followers;
+
+            document.querySelector(".bio p").innerHTML=i.bio;
+        });
+
+
+
+    </script>
+</body>
+
+</html>

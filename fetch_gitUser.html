@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Javascript :- Fetch User Info</title>
+    <style>
+        .flex {display: flex; gap: 10px; flex-wrap: wrap;}
+
+        #gitUsersID{display: none;}
+
+        .btn{ 
+            height: 36px; 
+            padding: 8px 12px; 
+            border: 1px solid #888; 
+            background: transparent; 
+            color: inherit; 
+            border-radius: 5px; 
+            vertical-align: middle; 
+            margin: 5px;
+        }
+        input[type="text"], input[type="number"], input[type="password"], input[type="search"], input[type="email"], input
+        { 
+            /* height: 20px;  */
+            padding: 10px 12px; 
+            border: 1px solid #888; 
+            background: transparent; 
+            color: inherit; 
+            border-radius: 5px; 
+            vertical-align: middle; 
+            margin: 5px;
+        }
+
+
+
+        .user_div{width: 300px; border-radius: 10px; border: solid 2px #4d1919; padding: 10px; text-align: center;}
+        .user_div img{border-radius: 50%; border: 1px #4d1919 solid; padding: 3px; vertical-align: bottom;}
+
+        .user_personalInfo{margin: 10px 0px; display: block;}
+        .user_personalInfo h3{font-size: 20px; margin: 0px 0px 10px;}
+        .user_personalInfo p{margin: 0px;}
+
+
+        .user_follo_count{display: flex; justify-content: center; gap: 20px; margin: 20px 0px;}
+        .follow, .following{display: flex; flex-direction: column; font-size: 18px;}
+        .follow .count, .following .count{ color: #19a655; font-weight: 300;}
+
+
+        .bio{border-top: solid 2px rgba(25, 166, 85, 0.3); padding: 10px 0px 0px;}
+        .bio h4{font-size: 18px; margin-bottom:10px;}
+        
+    </style>
+</head>
+
+<body>
+    <form name="gitUsers">
+        <label>
+            User Name:- 
+            <input type="search" name="userName" required />
+        </label>
+        <button class="btn">Search</button>
+        <span class="error"></span>
+    </form>
+
+    <div class="flex" id="gitUsersID">
+        <div class="user_div">
+            <img src="" alt="" width="200" height="200" />
+            <div class="user_personalInfo">
+                <h3></h3>
+                <p></p>
+            </div>
+            <div class="user_follo_count">
+                <div class="follow">
+                    <span class="count"></span>
+                    <span class="count_text"></span>
+                </div>
+                <div class="following">
+                    <span class="count"></span>
+                    <span class="count_text"></span>
+                </div>
+            </div>
+
+            <div class="bio">
+                <h4>Bio</h4>
+                <p></p>
+            </div>
+        </div>
+
+    </div>
+    <script>
+        "use strict";
+
+        document.querySelector(`[name="gitUsers"]`).addEventListener("submit", function(e)
+        {
+            e.preventDefault();
+            const getUser=this.userName.value;
+            const gitUserAPI=`https://api.github.com/users/${getUser}`;
+
+            console.log(gitUserAPI);
+            
+            fetch(gitUserAPI).then(i=>i.json()).then(i=>console.table(i));
+            
+            fetch(gitUserAPI).then(i=>i.json()).then(i=>{                
+
+                document.getElementById('gitUsersID').style.display='block';
+
+                document.querySelector(".user_div img").src=i.avatar_url;
+                document.querySelector(".user_personalInfo h3").innerHTML=i.name;
+                document.querySelector(".user_personalInfo p").innerHTML=i.location;
+
+                if((i.following==true) || (i.followers==true)){
+                    document.querySelector(".follow .count").innerHTML=i.following;
+                    document.querySelector(".following .count").innerHTML=i.followers;
+
+                    document.querySelector(".follow .count_text").innerHTML+='Followers';
+                    document.querySelector(".following .count_text").innerHTML+='Following';
+                }
+                else
+                {
+                    let createdDate=new Date(i.created_at).toLocaleDateString();
+                    let updateDate=new Date(i.updated_at).toLocaleDateString();
+                    
+                    document.querySelector(".follow .count").innerHTML=createdDate;
+                    document.querySelector(".following .count").innerHTML=updateDate;
+
+                    document.querySelector(".follow .count_text").innerHTML+='Created';
+                    document.querySelector(".following .count_text").innerHTML+='Updated';
+                }
+                document.querySelector(".bio p").innerHTML=i.bio;
+
+                /*if(i.login==true)
+                {        
+                    // document.querySelector(".git_Users").style.display='block';   
+                    // document.getElementsByClassName("git_Users").style.display='block';
+                    document.getElementById("gitUsers").style.display='block';
+
+                    document.querySelector(".user_div img").src=i.avatar_url;
+                    document.querySelector(".user_personalInfo h3").innerHTML=i.name;
+                    document.querySelector(".user_personalInfo p").innerHTML=i.location;
+
+                    if((i.following==true) || (i.followers==true)){
+                        document.querySelector(".follow .count").innerHTML=i.following;
+                        document.querySelector(".following .count").innerHTML=i.followers;
+
+                        document.querySelector(".follow .count_text").innerHTML+='Followers';
+                        document.querySelector(".following .count_text").innerHTML+='Following';
+                    }
+                    else
+                    {
+                        document.querySelector(".follow .count").innerHTML=i.created_at;
+                        document.querySelector(".following .count").innerHTML=i.updated_at;
+
+                        document.querySelector(".follow .count_text").innerHTML+='Created';
+                        document.querySelector(".following .count_text").innerHTML+='Updated';
+                    }
+                    document.querySelector(".bio p").innerHTML=i.bio;
+                }
+                else
+                {
+                    // document.querySelector(".git_User").style.display="none";
+                    document.getElementById("gitUsers").style.display='none';
+                }*/
+            });
+
+        })      
+        
+
+
+
+    </script>
+</body>
+
+</html>
